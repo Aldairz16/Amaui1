@@ -5,27 +5,28 @@ import { Volume2, Zap } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
-  const [phone, setPhone] = useState('');
+  const [step, setStep] = useState<'email' | 'otp'>('email');
+  const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
 
-  const handlePhoneSubmit = () => {
-    if (phone.length >= 9) {
+  const handleEmailSubmit = () => {
+    // Basic email validation
+    if (email.includes('@') && email.includes('.')) {
       setError('');
       setStep('otp');
     } else {
-      setError('Por favor, ingresa un número válido.');
+      setError('Por favor, ingresa un correo válido.');
     }
   };
 
   const handleOtpSubmit = () => {
-    if (otp.length === 4) {
+    if (otp.length === 6) { // Default Supabase email OTP length is 6 digits
       setError('');
       // Simulate success and navigate to role selection
       navigate('/roles');
     } else {
-      setError('El código debe tener 4 números.');
+      setError('El código debe tener 6 números.');
     }
   };
 
@@ -34,7 +35,7 @@ export const Login: React.FC = () => {
       
       <div className="flex justify-between items-center" style={{ marginBottom: '2rem' }}>
         <h1 style={{ color: 'var(--color-primary)', fontSize: '2.5rem', margin: 0 }}>
-          {step === 'phone' ? 'Ingresa' : 'Confirma'}
+          {step === 'email' ? 'Ingresa' : 'Confirma'}
         </h1>
         <button 
           className="btn-ghost" 
@@ -50,19 +51,18 @@ export const Login: React.FC = () => {
       </div>
 
       <div className="card" style={{ padding: '2rem' }}>
-        {step === 'phone' ? (
+        {step === 'email' ? (
           <>
             <p className="text-xl" style={{ marginBottom: '2rem' }}>
-              Escribe tu número de celular para empezar.
+              Escribe tu correo electrónico para empezar. Te enviaremos un código.
             </p>
             <Input 
-              label="Mi número es:" 
-              type="tel" 
-              placeholder="Ej. 987654321" 
-              value={phone}
-              onChange={e => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
-              maxLength={9}
-              inputMode="numeric"
+              label="Mi correo es:" 
+              type="email" 
+              placeholder="Ej. juan@correo.com" 
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              inputMode="email"
             />
             {error && (
               <div style={{ backgroundColor: '#FEE2E2', color: 'var(--color-error)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', fontWeight: 'bold' }}>
@@ -70,8 +70,8 @@ export const Login: React.FC = () => {
               </div>
             )}
             <Button 
-              onClick={handlePhoneSubmit} 
-              disabled={phone.length < 9}
+              onClick={handleEmailSubmit} 
+              disabled={!email.includes('@')}
               style={{ marginTop: '1rem' }}
             >
               Continuar
@@ -80,15 +80,15 @@ export const Login: React.FC = () => {
         ) : (
           <>
             <p className="text-xl" style={{ marginBottom: '2rem' }}>
-              Te enviamos un mensaje con 4 números. Escríbelos aquí:
+              Te enviamos un mensaje a tu correo con 6 números. Escríbelos aquí:
             </p>
             <Input 
               label="El código es:" 
               type="tel" 
-              placeholder="Ej. 1234" 
+              placeholder="Ej. 123456" 
               value={otp}
               onChange={e => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
-              maxLength={4}
+              maxLength={6}
               inputMode="numeric"
             />
             {error && (
@@ -98,17 +98,17 @@ export const Login: React.FC = () => {
             )}
             <Button 
               onClick={handleOtpSubmit} 
-              disabled={otp.length < 4}
+              disabled={otp.length < 6}
               style={{ marginTop: '1rem' }}
             >
               Entrar
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => setStep('phone')} 
+              onClick={() => setStep('email')} 
               style={{ marginTop: '1rem' }}
             >
-              Cambiar número
+              Cambiar correo
             </Button>
           </>
         )}

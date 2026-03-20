@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input } from '../components/UI';
-import { Volume2 } from 'lucide-react';
+import { Volume2, Zap } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -113,6 +113,26 @@ export const Login: React.FC = () => {
           </>
         )}
       </div>
+
+      {/* Demo Quick Access */}
+      <div style={{ marginTop: '3rem', borderTop: '2px dashed var(--color-border)', paddingTop: '2rem' }}>
+        <p className="text-center text-muted text-lg" style={{ marginBottom: '1rem' }}>
+          <Zap size={20} style={{ verticalAlign: 'middle', marginRight: '8px' }} />
+          Acceso Rápido (Solo Demo)
+        </p>
+        <div className="flex-col gap-sm">
+          <Button variant="outline" onClick={() => navigate('/roles')} style={{ fontSize: '1rem', padding: '0.75rem' }}>
+            Saltar al inicio (Sin código)
+          </Button>
+          <Button variant="ghost" onClick={() => navigate('/home')} style={{ fontSize: '1rem', padding: '0.75rem' }}>
+            Ir directo a Mi Salud (Usuario)
+          </Button>
+          <Button variant="ghost" onClick={() => navigate('/caregiver')} style={{ fontSize: '1rem', padding: '0.75rem' }}>
+            Ir directo a Cuidador
+          </Button>
+        </div>
+      </div>
+
     </div>
   );
 };

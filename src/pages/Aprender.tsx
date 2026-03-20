@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '../components/UI';
-import { Lock, Unlock, PlayCircle, MessageCircle, AlertTriangle } from 'lucide-react';
+import { Lock, PlayCircle, MessageCircle, AlertTriangle, CheckCircle, Search, Keyboard } from 'lucide-react';
 
 export const Aprender: React.FC = () => {
   const [simulating, setSimulating] = useState(false);
@@ -98,27 +98,57 @@ export const Aprender: React.FC = () => {
         
         {/* Nivel 1 */}
         <div>
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Nivel 1: Primeros Pasos</h2>
+          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Aprender WhatsApp</h2>
           <div 
-            className="card flex items-center justify-between" 
-            style={{ backgroundColor: 'var(--color-surface)', cursor: 'pointer', borderLeft: '6px solid var(--color-primary)' }}
-            onClick={startSimulation}
+            className="flex-col gap-sm"
           >
-            <div className="flex items-center gap-md">
-              <div style={{ backgroundColor: 'var(--color-bg-main)', padding: '1rem', borderRadius: '50%' }}>
-                <MessageCircle size={32} color="var(--color-primary)" />
+            <div 
+              className="card flex items-center justify-between" 
+              style={{ backgroundColor: '#F3D2A9', cursor: 'pointer', margin: 0, padding: '1rem 1.5rem', borderRadius: '16px', border: 'none' }}
+              onClick={startSimulation}
+            >
+              <div className="flex items-center gap-md">
+                <MessageCircle size={32} color="var(--color-secondary)" />
+                <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--color-secondary)' }}>Abrir la aplicación</h3>
               </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--color-primary)' }}>Enviar un mensaje</h3>
-                <p className="text-muted" style={{ margin: 0, fontSize: '1rem' }}>Práctica guiada (WhatsApp)</p>
+              <div className="flex-col items-center">
+                <CheckCircle size={24} color="var(--color-secondary)" style={{ marginBottom: '4px' }} />
+                <span className="text-bold" style={{ fontSize: '0.75rem', color: 'var(--color-secondary)' }}>Completado</span>
               </div>
             </div>
-            <Unlock size={24} color="var(--color-primary)" />
+
+            <div 
+              className="card flex items-center justify-between" 
+              style={{ backgroundColor: '#EDC69A', cursor: 'pointer', margin: 0, padding: '1rem 1.5rem', borderRadius: '16px', border: 'none' }}
+              onClick={startSimulation}
+            >
+              <div className="flex items-center gap-md">
+                <Search size={32} color="var(--color-secondary)" />
+                <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--color-secondary)' }}>Buscar un contacto</h3>
+              </div>
+              <Button variant="accent" style={{ width: 'auto', padding: '0.5rem 1rem', fontSize: '1rem', color: 'white', backgroundColor: '#D68953' }}>
+                Siguiente
+              </Button>
+            </div>
+            
+            <div 
+              className="card flex items-center justify-between" 
+              style={{ backgroundColor: '#EDC69A', cursor: 'pointer', margin: 0, padding: '1rem 1.5rem', borderRadius: '16px', border: 'none' }}
+              onClick={startSimulation}
+            >
+              <div className="flex items-center gap-md">
+                <Keyboard size={32} color="var(--color-secondary)" />
+                <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--color-secondary)' }}>Escribir un mensaje</h3>
+              </div>
+              <Button variant="accent" style={{ width: 'auto', padding: '0.5rem 1rem', fontSize: '1rem', color: 'white', backgroundColor: '#D68953' }}>
+                Siguiente
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Nivel 2 */}
-        <div>
+        <div style={{ marginTop: '2rem' }}>
           <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Nivel 2: Comunicación Diaria</h2>
           <div className="card flex items-center justify-between" style={{ opacity: 0.6 }}>
             <div className="flex items-center gap-md">

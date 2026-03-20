@@ -11,6 +11,7 @@ import { Salud } from './pages/Salud';
 import { Aprender } from './pages/Aprender';
 import { Caregiver } from './pages/Caregiver';
 import { AppProvider, useAppContext } from './store/AppContext';
+import { AuthProvider } from './store/AuthContext';
 import { SegmentedControl } from './components/SegmentedControl';
 import { VoiceAssistant } from './components/VoiceAssistant';
 
@@ -154,8 +155,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </AuthProvider>
   );
 }

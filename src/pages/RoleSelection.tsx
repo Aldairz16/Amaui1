@@ -1,9 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Users } from 'lucide-react';
+import { User, Users, UsersRound } from 'lucide-react';
+import { useAppContext } from '../store/AppContext';
 
 export const RoleSelection: React.FC = () => {
   const navigate = useNavigate();
+  const { setRole, setActiveContext } = useAppContext();
+
+  const handleSelect = (r: 'user' | 'caregiver' | 'mixed') => {
+    setRole(r);
+    setActiveContext(r === 'caregiver' ? 'caregiver' : 'self');
+    navigate(r === 'caregiver' ? '/caregiver' : '/onboarding');
+  };
 
   return (
     <div className="page-container" style={{ justifyContent: 'center', minHeight: '100vh', paddingBottom: '2rem' }}>
@@ -18,15 +26,15 @@ export const RoleSelection: React.FC = () => {
         {/* Main User Card */}
         <button 
           className="card flex items-center gap-md" 
-          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '2rem' }}
-          onClick={() => navigate('/onboarding')}
+          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '1.5rem', margin: 0 }}
+          onClick={() => handleSelect('user')}
         >
           <div style={{ backgroundColor: 'var(--color-bg-main)', padding: '1rem', borderRadius: '50%' }}>
-            <User size={48} color="var(--color-primary)" />
+            <User size={36} color="var(--color-primary)" />
           </div>
           <div>
-            <h2 style={{ margin: 0, fontSize: '1.75rem', color: 'var(--color-primary)' }}>Soy el usuario principal</h2>
-            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1.1rem' }}>
+            <h2 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--color-primary)' }}>Uso AMAUI para mí</h2>
+            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1rem' }}>
               Para cuidar mi salud y aprender.
             </p>
           </div>
@@ -35,16 +43,33 @@ export const RoleSelection: React.FC = () => {
         {/* Caregiver Card */}
         <button 
           className="card flex items-center gap-md" 
-          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '2rem' }}
-          onClick={() => navigate('/caregiver')}
+          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '1.5rem', margin: 0 }}
+          onClick={() => handleSelect('caregiver')}
         >
           <div style={{ backgroundColor: 'var(--color-bg-main)', padding: '1rem', borderRadius: '50%' }}>
-            <Users size={48} color="var(--color-secondary)" />
+            <Users size={36} color="var(--color-secondary)" />
           </div>
           <div>
-            <h2 style={{ margin: 0, fontSize: '1.75rem', color: 'var(--color-secondary)' }}>Soy familiar o cuidador</h2>
-            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1.1rem' }}>
-              Para acompañar y ayudar.
+            <h2 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Acompaño a otra persona</h2>
+            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1rem' }}>
+              Para ser cuidador o familiar.
+            </p>
+          </div>
+        </button>
+
+        {/* Mixed Role Card */}
+        <button 
+          className="card flex items-center gap-md" 
+          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '1.5rem', margin: 0 }}
+          onClick={() => handleSelect('mixed')}
+        >
+          <div style={{ backgroundColor: 'var(--color-bg-main)', padding: '1rem', borderRadius: '50%' }}>
+            <UsersRound size={36} color="var(--color-alert-mod)" />
+          </div>
+          <div>
+            <h2 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--color-text-main)' }}>Hago ambos</h2>
+            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1rem' }}>
+              Superviso mi salud y la de alguien más.
             </p>
           </div>
         </button>

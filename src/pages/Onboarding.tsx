@@ -1,153 +1,224 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wizard } from '../components/Wizard';
-import { Input } from '../components/UI';
-import { ShieldAlert } from 'lucide-react';
+
+const TOTAL_STEPS = 7;
 
 export const Onboarding: React.FC = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(1);
 
-  // Form State
+  // Form Data
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [mainCondition, setMainCondition] = useState('');
   const [otherCondition, setOtherCondition] = useState('');
-  
-  // Trusted Person State
+  const [history, setHistory] = useState('');
   const [trustedName, setTrustedName] = useState('');
   const [trustedPhone, setTrustedPhone] = useState('');
-  const [trustedRole, setTrustedRole] = useState('Hijo/a');
 
-  const goToNextStep = () => {
-    setStep(prev => prev + 1);
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1: return name.trim().length > 0;
+      case 2: return age.trim().length > 0;
+      case 3: return mainCondition.trim().length > 0;
+      case 4: return true; // Optional
+      case 5: return true; // Optional
+      case 6: return trustedName.trim().length > 0;
+      case 7: return trustedPhone.trim().length >= 9;
+      default: return false;
+    }
   };
 
-  const goToPrevStep = () => {
-    setStep(prev => prev - 1);
+  const handleNext = () => {
+    if (currentStep < TOTAL_STEPS) {
+      setCurrentStep(prev => prev + 1);
+    } else {
+      navigate('/home');
+    }
   };
 
-  const completeOnboarding = () => {
-    navigate('/home');
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(prev => prev - 1);
+    } else {
+      navigate(-1);
+    }
+  };
+
+  // Render step content
+  const renderStep = () => {
+    const inputStyle: React.CSSProperties = {
+      width: '100%',
+      padding: '1rem',
+      fontSize: '1.1rem',
+      border: '2px solid #E0C9A8',
+      borderRadius: '16px',
+      outline: 'none',
+      backgroundColor: '#FFF',
+      boxSizing: 'border-box'
+    };
+
+    switch (currentStep) {
+      case 1:
+        return (
+          <>
+            <h1 style={titleStyle}>¿Cómo te llamas?</h1>
+            <input style={inputStyle} type="text" placeholder="Escribe tu nombre" value={name} onChange={e => setName(e.target.value)} />
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <h1 style={titleStyle}>¿Cuántos años tienes?</h1>
+            <input style={inputStyle} type="tel" inputMode="numeric" placeholder="Ej. 65" value={age} onChange={e => setAge(e.target.value.replace(/[^0-9]/g, ''))} maxLength={3} />
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <h1 style={titleStyle}>¿Qué condición de salud principal tienes?</h1>
+            <input style={inputStyle} type="text" placeholder="Ej. Hipertensión, Diabetes" value={mainCondition} onChange={e => setMainCondition(e.target.value)} />
+          </>
+        );
+      case 4:
+        return (
+          <>
+            <h1 style={titleStyle}>¿Tienes otra enfermedad?</h1>
+            <p style={subtitleStyle}>Es opcional, pero nos ayuda a cuidarte mejor.</p>
+            <input style={inputStyle} type="text" placeholder="Ej. Colesterol alto" value={otherCondition} onChange={e => setOtherCondition(e.target.value)} />
+          </>
+        );
+      case 5:
+        return (
+          <>
+            <h1 style={titleStyle}>¿Algo más que debamos saber?</h1>
+            <p style={subtitleStyle}>Puedes contarnos brevemente si tomas algún tratamiento especial.</p>
+            <textarea
+              placeholder="Escribe aquí (opcional)"
+              value={history}
+              onChange={e => setHistory(e.target.value)}
+              rows={4}
+              style={{ ...inputStyle, resize: 'none', fontFamily: 'inherit' }}
+            />
+          </>
+        );
+      case 6:
+        return (
+          <>
+            <h1 style={titleStyle}>¿Quién es tu persona de confianza?</h1>
+            <p style={subtitleStyle}>Si alguna vez necesitas ayuda, podemos contactarla por ti.</p>
+            <input style={inputStyle} type="text" placeholder="Nombre de tu persona de confianza" value={trustedName} onChange={e => setTrustedName(e.target.value)} />
+          </>
+        );
+      case 7:
+        return (
+          <>
+            <h1 style={titleStyle}>¿Cuál es su número de celular?</h1>
+            <p style={subtitleStyle}>Solo lo usaremos en caso de emergencia o para enviarle un aviso.</p>
+            <input style={inputStyle} type="tel" inputMode="numeric" placeholder="Ej. 987654321" value={trustedPhone} onChange={e => setTrustedPhone(e.target.value.replace(/[^0-9]/g, ''))} maxLength={9} />
+          </>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
-    <>
-      {step === 1 && (
-        <Wizard 
-          currentStep={1} totalSteps={4}
-          title="Hola, ¿cómo te llamas?"
-          subtitle="Queremos conocerte mejor."
-          onNext={goToNextStep}
-          canProceed={name.trim().length > 1}
-        >
-          <Input 
-            label="Mi nombre es:" 
-            placeholder="Ej. María" 
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+    <div 
+      style={{ 
+        minHeight: '100vh', 
+        backgroundColor: '#FFFFFF',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '2rem',
+        paddingTop: '3rem'
+      }}
+    >
+      {/* Back */}
+      <button 
+        onClick={handleBack}
+        style={{ 
+          background: 'transparent', 
+          border: 'none', 
+          fontSize: '1.1rem', 
+          color: '#2F3A3D', 
+          cursor: 'pointer', 
+          padding: 0, 
+          marginBottom: '3rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}
+      >
+        ← Atrás
+      </button>
+
+      {/* Spacer to push content down */}
+      <div style={{ flex: 1 }} />
+
+      {/* Progress Bar */}
+      <div style={{ display: 'flex', gap: '6px', marginBottom: '0.5rem' }}>
+        {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+          <div
+            key={i}
+            style={{
+              flex: 1,
+              height: '6px',
+              borderRadius: '3px',
+              backgroundColor: i < currentStep ? '#C47A3A' : '#E8D5BF'
+            }}
           />
-        </Wizard>
-      )}
+        ))}
+      </div>
+      <p style={{ fontSize: '0.85rem', color: '#8B8B8B', margin: 0, marginBottom: '2rem' }}>
+        Paso {currentStep} de {TOTAL_STEPS}
+      </p>
 
-      {step === 2 && (
-        <Wizard 
-          currentStep={2} totalSteps={4}
-          title={`Mucho gusto, ${name}. ¿Cuántos años tienes?`}
-          onNext={goToNextStep}
-          onPrev={goToPrevStep}
-          canProceed={age.length > 1}
-        >
-          <Input 
-            label="Mi edad:" 
-            type="tel"
-            inputMode="numeric"
-            placeholder="Ej. 65" 
-            value={age}
-            onChange={(e) => setAge(e.target.value.replace(/[^0-9]/g, ''))}
-            maxLength={3}
-          />
-        </Wizard>
-      )}
+      {/* Step Content */}
+      <div style={{ marginBottom: '2rem' }}>
+        {renderStep()}
+      </div>
 
-      {step === 3 && (
-        <Wizard 
-          currentStep={3} totalSteps={4}
-          title="Hablemos de tu salud"
-          subtitle="Esto nos ayuda a configurar tus avisos y alertas."
-          onNext={goToNextStep}
-          onPrev={goToPrevStep}
-          canProceed={mainCondition.trim().length > 2}
-        >
-          <Input 
-            label="¿Qué condición de salud cuidas más?" 
-            placeholder="Ej. Hipertensión, Diabetes..." 
-            value={mainCondition}
-            onChange={(e) => setMainCondition(e.target.value)}
-          />
-          <div style={{ marginTop: '1.5rem' }}>
-            <Input 
-              label="Otra enfermedad o cuidado (opcional):" 
-              placeholder="Ej. Asma, colesterol..." 
-              value={otherCondition}
-              onChange={(e) => setOtherCondition(e.target.value)}
-            />
-          </div>
-        </Wizard>
-      )}
+      {/* Next Button */}
+      <button 
+        onClick={handleNext}
+        disabled={!canProceed()}
+        style={{
+          width: '100%',
+          padding: '1rem',
+          fontSize: '1.2rem',
+          fontWeight: 700,
+          color: '#FFFFFF',
+          backgroundColor: canProceed() ? '#D9C0A0' : '#E8DDD0',
+          border: 'none',
+          borderRadius: '9999px',
+          cursor: canProceed() ? 'pointer' : 'default',
+          marginBottom: '2rem'
+        }}
+      >
+        Siguiente
+      </button>
 
-      {step === 4 && (
-        <Wizard 
-          currentStep={4} totalSteps={4}
-          title="Persona de confianza"
-          subtitle="Añade a alguien. Queremos ayudarte sin invadir tu espacio."
-          onComplete={completeOnboarding}
-          onPrev={goToPrevStep}
-          canProceed={trustedName.length > 2 && trustedPhone.length >= 9}
-        >
-          <div className="card flex gap-sm" style={{ backgroundColor: 'var(--color-bg-main)', border: '1px solid var(--color-primary)' }}>
-            <ShieldAlert size={24} color="var(--color-primary)" style={{ flexShrink: 0 }} />
-            <p style={{ margin: 0, fontSize: '1rem', color: 'var(--color-text-main)' }}>
-              Solo le avisaremos si hay una alerta importante o si lo necesitas. Tú tienes el control en todo momento.
-            </p>
-          </div>
-
-          <Input 
-            label="Nombre de esa persona:" 
-            placeholder="Ej. Juan" 
-            value={trustedName}
-            onChange={(e) => setTrustedName(e.target.value)}
-          />
-
-          <div style={{ marginTop: '1rem' }}>
-            <Input 
-              label="Número de celular:" 
-              type="tel"
-              inputMode="numeric"
-              placeholder="Ej. 987654321" 
-              value={trustedPhone}
-              onChange={(e) => setTrustedPhone(e.target.value.replace(/[^0-9]/g, ''))}
-              maxLength={9}
-            />
-          </div>
-
-          <div style={{ marginTop: '1rem' }} className="form-group">
-            <label className="label">¿Qué parentesco o relación tienen?</label>
-            <select 
-              className="input" 
-              value={trustedRole}
-              onChange={(e) => setTrustedRole(e.target.value)}
-            >
-              <option value="Hijo/a">Hijo o Hija</option>
-              <option value="Esposo/a">Esposo o Esposa</option>
-              <option value="Nieto/a">Nieto o Nieta</option>
-              <option value="Cuidador/a">Cuidador o Cuidadora</option>
-              <option value="Amigo/a">Amigo de confianza</option>
-              <option value="Otro">Otro familiar</option>
-            </select>
-          </div>
-        </Wizard>
-      )}
-    </>
+      {/* Bottom Spacer */}
+      <div style={{ flex: 1 }} />
+    </div>
   );
+};
+
+// --- Shared Styles ---
+const titleStyle: React.CSSProperties = {
+  fontSize: '1.75rem',
+  fontWeight: 800,
+  color: '#2F3A3D',
+  margin: 0,
+  marginBottom: '1.5rem',
+  lineHeight: 1.3
+};
+
+const subtitleStyle: React.CSSProperties = {
+  fontSize: '1rem',
+  color: '#8B8B8B',
+  margin: 0,
+  marginBottom: '1.5rem',
+  lineHeight: 1.4
 };

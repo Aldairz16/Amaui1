@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Users, UsersRound } from 'lucide-react';
+import { User, Shield } from 'lucide-react';
 import { useAppContext } from '../store/AppContext';
 
 export const RoleSelection: React.FC = () => {
@@ -14,65 +14,111 @@ export const RoleSelection: React.FC = () => {
   };
 
   return (
-    <div className="page-container" style={{ justifyContent: 'center', minHeight: '100vh', paddingBottom: '2rem' }}>
-      <h1 style={{ color: 'var(--color-primary)', fontSize: '2.5rem', marginBottom: '1rem' }}>
-        ¿Quién eres?
+    <div 
+      style={{ 
+        minHeight: '100vh', 
+        backgroundColor: '#FFFFFF',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '2rem',
+        paddingTop: '3rem'
+      }}
+    >
+      {/* Back */}
+      <button 
+        onClick={() => navigate(-1)}
+        style={{ 
+          background: 'transparent', 
+          border: 'none', 
+          fontSize: '1.1rem', 
+          color: '#2F3A3D', 
+          cursor: 'pointer', 
+          padding: 0, 
+          marginBottom: '2rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
+        }}
+      >
+        ← Atrás
+      </button>
+
+      {/* Title */}
+      <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#2F3A3D', margin: 0, marginBottom: '2rem', lineHeight: 1.2 }}>
+        ¿Cómo quieres iniciar?
       </h1>
-      <p className="text-xl" style={{ marginBottom: '3rem' }}>
-        Elige cómo usarás la aplicación hoy.
-      </p>
 
-      <div className="flex-col gap-lg">
-        {/* Main User Card */}
+      {/* Cards Container */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        
+        {/* Adulto Mayor Card */}
         <button 
-          className="card flex items-center gap-md" 
-          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '1.5rem', margin: 0 }}
           onClick={() => handleSelect('user')}
+          style={{ 
+            width: '100%',
+            backgroundColor: '#E8C99B',
+            border: 'none',
+            borderRadius: '20px',
+            padding: '2.5rem 2rem',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1rem',
+            textAlign: 'center'
+          }}
         >
-          <div style={{ backgroundColor: 'var(--color-bg-main)', padding: '1rem', borderRadius: '50%' }}>
-            <User size={36} color="var(--color-primary)" />
+          <div style={{
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            backgroundColor: '#FFFFFF',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <User size={32} color="#6B5A3E" />
           </div>
           <div>
-            <h2 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--color-primary)' }}>Uso AMAUI para mí</h2>
-            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1rem' }}>
-              Para cuidar mi salud y aprender.
-            </p>
+            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: '#2F3A3D' }}>Adulto Mayor</h2>
+            <p style={{ margin: 0, marginTop: '0.25rem', fontSize: '1rem', color: '#5C5347' }}>Quiero gestionar mi día</p>
           </div>
         </button>
 
-        {/* Caregiver Card */}
+        {/* Cuidador Card */}
         <button 
-          className="card flex items-center gap-md" 
-          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '1.5rem', margin: 0 }}
           onClick={() => handleSelect('caregiver')}
+          style={{ 
+            width: '100%',
+            backgroundColor: '#E8C99B',
+            border: 'none',
+            borderRadius: '20px',
+            padding: '2.5rem 2rem',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1rem',
+            textAlign: 'center'
+          }}
         >
-          <div style={{ backgroundColor: 'var(--color-bg-main)', padding: '1rem', borderRadius: '50%' }}>
-            <Users size={36} color="var(--color-secondary)" />
+          <div style={{
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            backgroundColor: '#FFFFFF',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Shield size={32} color="#6B5A3E" />
           </div>
           <div>
-            <h2 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--color-secondary)' }}>Acompaño a otra persona</h2>
-            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1rem' }}>
-              Para ser cuidador o familiar.
-            </p>
+            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700, color: '#2F3A3D' }}>Cuidador</h2>
+            <p style={{ margin: 0, marginTop: '0.25rem', fontSize: '1rem', color: '#5C5347' }}>Asistir a un familiar</p>
           </div>
         </button>
 
-        {/* Mixed Role Card */}
-        <button 
-          className="card flex items-center gap-md" 
-          style={{ width: '100%', textAlign: 'left', border: 'none', cursor: 'pointer', padding: '1.5rem', margin: 0 }}
-          onClick={() => handleSelect('mixed')}
-        >
-          <div style={{ backgroundColor: 'var(--color-bg-main)', padding: '1rem', borderRadius: '50%' }}>
-            <UsersRound size={36} color="var(--color-alert-mod)" />
-          </div>
-          <div>
-            <h2 style={{ margin: 0, fontSize: '1.5rem', color: 'var(--color-text-main)' }}>Hago ambos</h2>
-            <p className="text-muted" style={{ margin: 0, marginTop: '0.5rem', fontSize: '1rem' }}>
-              Superviso mi salud y la de alguien más.
-            </p>
-          </div>
-        </button>
       </div>
     </div>
   );

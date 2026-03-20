@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Link, useNavigate } from 'react-router-dom';
 import { Home as HomeIcon, Pill, HeartPulse, BookOpen, Menu, UserCircle, Users, Bell, LayoutDashboard } from 'lucide-react';
 import { Splash } from './pages/Splash';
-import { Login } from './pages/Login';
 import { RoleSelection } from './pages/RoleSelection';
 import { Onboarding } from './pages/Onboarding';
 import { Home } from './pages/Home';
@@ -129,7 +128,7 @@ function AppContent() {
       <Routes>
         {/* Auth Flow */}
         <Route path="/" element={<Splash />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
         <Route path="/roles" element={<RoleSelection />} />
         <Route path="/onboarding" element={<Onboarding />} />
         
